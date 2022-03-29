@@ -17,13 +17,14 @@ const App = () => {
         getData()
             .catch(console.error)
     }, [])
-    console.log(data)
 
-    const questionsArray = data.map(element => <Question data={element}/>)
+    const questionsArray = data.map(element => <Question data={element} key={element.question}/>)
 
     return (
         <main>
+            <img src="images/orange_blob.svg" alt="" className="orange-blob"/>
             {questionsArray}
+            <img src="images/blue_blob.svg" alt="" className="blue-blob"/>
         </main>
     );
 };

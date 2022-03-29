@@ -1,11 +1,29 @@
 import React, {useState} from 'react';
 
 const Question = ({data}) => {
-    const [isClicked, setIsClicked] = useState(false)
     const answers = [
         data.correct_answer,
         ...data.incorrect_answers
     ]
+    const [newAnswers, setNewAnswers] = useState(getNewAnswers())
+
+
+    function getNewAnswers() {
+        const newArray = []
+        shuffle(answers)
+        for (let i = 0; i < answers.length; i++) {
+            newArray.push({
+                answer: answers[i],
+                isHeld: false
+            })
+        }
+        return newArray
+    }
+
+    function updateAnswer(answer) {
+        answer.isHeld = !answer.isHeld
+        console.log(answer.isHeld)
+    }
 
     const decodeEntities = ( () => {
         // this prevents any overhead from creating the object each time
@@ -32,11 +50,10 @@ const Question = ({data}) => {
             [array[i], array[j]] = [array[j], array[i]];
         }
     }
-    shuffle(answers)
 
-    const answersArray = answers.map(answer =>
-        <button className="answer--btn" >
-            <h2 className="answer--value" >{decodeEntities(answer)}</h2>
+    const answersArray = newAnswers.map(answer =>
+        <button className="answer--btn" key={answer['answer']} onClick={() => updateAnswer(answer)}>
+            <h2 className="answer--value" >{decodeEntities(answer['answer'])}</h2>
         </button>
     )
 
