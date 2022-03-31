@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import Answer from "./Answer"
+import {nanoid} from "nanoid"
 
 const Question = ({data}) => {
     const answers = [
@@ -6,23 +8,28 @@ const Question = ({data}) => {
         ...data.incorrect_answers
     ]
     const [newAnswers, setNewAnswers] = useState(getNewAnswers())
-
-
+   
+    
     function getNewAnswers() {
         const newArray = []
         shuffle(answers)
         for (let i = 0; i < answers.length; i++) {
             newArray.push({
                 answer: answers[i],
-                isHeld: false
+                isHeld: false,
+                id: nanoid()
             })
         }
         return newArray
     }
 
-    function updateAnswer(answer) {
-        answer.isHeld = !answer.isHeld
-        console.log(answer.isHeld)
+    function updateAnswer(id) {
+        setNewAnswers(prevAnswers => prevAnswers.map(answer => {
+            return answer.id === id
+                ? {...answer, isHeld : !answer.isHeld}
+                : answer
+        }
+        ))
     }
 
     const decodeEntities = ( () => {
@@ -52,12 +59,14 @@ const Question = ({data}) => {
     }
 
     const answersArray = newAnswers.map(answer =>
-        <button className="answer--btn" key={answer['answer']} onClick={() => updateAnswer(answer)}>
-            <h2 className="answer--value" >{decodeEntities(answer['answer'])}</h2>
-        </button>
+        <Answer
+            answer={answer}
+            updateAnswer={updateAnswer}
+            key={answer['answer']}
+        />
+
     )
-
-
+    
     return (
         <div className="question">
             <h1 className="question--content" id="content">{decodeEntities(data.question)}</h1>
