@@ -2,13 +2,15 @@ import React, {useState, useEffect} from 'react';
 import Question from "./components/Question";
 import {nanoid} from "nanoid";
 import shuffle from "./utils/shuffle";
-import answer from "./components/Answer";
+
 
 
 const App = () => {
     const [isQuiz, setIsQuiz] = useState(true)
     const [data, setData] = useState([])
     const [questions, setQuestions]  = useState([])
+    const [isChecked, setIsChecked] = useState(false)
+    const [correctCount, setCorrectCount] = useState(0)
 
 
     useEffect(() => {
@@ -23,39 +25,45 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-        async function getQuestions() {
-            const questionsArray = []
-            data.map(question => questionsArray.push({
-                question: question.question,
-                answers: []
-            }))
-            for (let i = 0; questionsArray.length > i; i++) {
-                data.map(element => {
-                    if (questionsArray[i].question === element.question) {
-                        questionsArray[i].answers.push({
+        getQuestions()
+            .catch(err => console.log(err))
+    }, [data])
+
+    async function getQuestions() {
+        const questionsArray = []
+        data.map(question => questionsArray.push({
+            question: question.question,
+            answers: []
+        }))
+        for (let i = 0; questionsArray.length > i; i++) {
+            data.map(element => {
+                if (questionsArray[i].question === element.question) {
+                    questionsArray[i].answers.push({
                             answer: element.correct_answer,
                             isHeld: false,
                             id: nanoid(),
                             isCorrect: true
                         }
-                            )
-                        for (let j = 0; element.incorrect_answers.length > j; j++) {
-                            questionsArray[i].answers.push({
-                                answer: element.incorrect_answers[j],
-                                isHeld: false,
-                                id: nanoid(),
-                                isCorrect: false
-                            })
-                        }
+                    )
+                    for (let j = 0; element.incorrect_answers.length > j; j++) {
+                        questionsArray[i].answers.push({
+                            answer: element.incorrect_answers[j],
+                            isHeld: false,
+                            id: nanoid(),
+                            isCorrect: false
+                        })
                     }
-                })
-                shuffle(questionsArray[i].answers)
-            }
-            setQuestions(questionsArray)
+                }
+            })
+            shuffle(questionsArray[i].answers)
         }
-        getQuestions()
-            .catch(err => console.log(err))
-    }, [data])
+        setQuestions(questionsArray)
+    }
+
+    function restartQuiz() {
+        getQuestions().catch(err => console.log(err))
+        setIsChecked(prevIsChecked => !prevIsChecked)
+    }
 
     function updateAnswer(id) {
         setQuestions(prevQuestions => prevQuestions.map(question => {
@@ -66,15 +74,17 @@ const App = () => {
         }))
     }
 
-    function checkAnswers(answers) {
-        let countCorrect = 0
-        for (let i = 0; answers.length > 0; i++) {
-            console.log(answers[i])
-            if (answers[i].isHeld && answers[i].isCorrect) {
-                countCorrect++
+    function checkAnswers() {
+        let count = 0
+        for (let i = 0; questions.length > i; i++) {
+            for (let j = 0; questions[i].answers.length > j; j++) {
+               if (questions[i].answers[j].isCorrect === true && questions[i].answers[j].isHeld === true) {
+                  count++
+               }
             }
         }
-        console.log(countCorrect)
+        setCorrectCount(count)
+        setIsChecked(prevIsChecked => !prevIsChecked)
     }
 
     const questionsArray = questions.map(element => <Question
@@ -98,7 +108,14 @@ const App = () => {
             :
                 <div className="quiz--container">
                     {questionsArray}
-                    <button className="start--btn quiz--btn">Check answers</button>
+                    {isChecked
+                        ? <div className="quiz--again">
+                            <h2 className="quiz--correct-answers">You scored {correctCount}/5 correct answers</h2>
+                            <button className="start--btn again-btn" onClick={() => restartQuiz()}>Play again</button>
+                          </div>
+                        : <button className="start--btn quiz--btn" onClick={() => checkAnswers()}>Check answers</button>
+                    }
+
                 </div>
             }
             <img src="images/blue_blob.svg" alt="" className="blue-blob"/>

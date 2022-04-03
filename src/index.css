@@ -120,3 +120,24 @@ hr {
 .quiz--btn {
   margin: 0 auto 30px auto;
 }
+
+.quiz--again {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 15px 0 40px
+}
+
+.quiz--correct-answers {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 15px;
+
+  color: #293264;
+}
+
+.again-btn {
+  margin: 0;
+}
