@@ -46,6 +46,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #F5F7FB;
   margin: 12px 15px 0 0;
   transition: 0.2s;
+  color: #293264
 
 }
 
@@ -60,7 +61,7 @@ h1, h2, h3, h4, h5, h6 {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  color: #293264;
+  color: inherit;
   margin: 0 13px 0 13px;
 }
 

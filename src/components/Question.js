@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Answer from "./Answer"
 import decodeEntities from "../utils/decodeEntities";
 
@@ -9,6 +9,7 @@ const Question = (props) => {
             answer={answer}
             updateAnswer={props.updateAnswer}
             key={answer.id}
+            isChecked={props.isChecked}
         />
     )
 
