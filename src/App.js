@@ -3,8 +3,6 @@ import Question from "./components/Question";
 import {nanoid} from "nanoid";
 import shuffle from "./utils/shuffle";
 
-
-
 const App = () => {
     const [isQuiz, setIsQuiz] = useState(true)
     const [data, setData] = useState([])
@@ -93,6 +91,7 @@ const App = () => {
         key={element.question}
         checkAnswers={checkAnswers}
         updateAnswer={updateAnswer}
+        isChecked={isChecked}
     />
     )
 
