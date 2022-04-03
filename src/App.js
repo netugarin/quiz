@@ -14,11 +14,6 @@ const App = () => {
 
 
     useEffect(() => {
-        async function getData() {
-            const data = await fetch("https://opentdb.com/api.php?amount=5&type=multiple")
-            const questions = await data.json()
-            setData(questions.results)
-        }
         getData()
             .catch(err => console.log(err))
 
@@ -60,8 +55,14 @@ const App = () => {
         setQuestions(questionsArray)
     }
 
+    async function getData() {
+        const data = await fetch("https://opentdb.com/api.php?amount=5&type=multiple")
+        const questions = await data.json()
+        setData(questions.results)
+    }
+
     function restartQuiz() {
-        getQuestions().catch(err => console.log(err))
+        getData()
         setIsChecked(prevIsChecked => !prevIsChecked)
     }
 
