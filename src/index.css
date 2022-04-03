@@ -74,4 +74,49 @@ hr {
   margin: 20px 0 20px 0;
 }
 
+.start {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 500px;
+  font-family: 'Karla', sans-serif;
+  font-size: 45px;
+}
 
+
+.start--description {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 25px;
+  margin-top: 7px;
+}
+
+.start--btn {
+  margin-top: 30px;
+  width: 200px;
+  height: 60px;
+  border: none;
+  border-radius: 15px;
+  background-color: #4D5B9E;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: #F5F7FB;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.start--btn:hover {
+  background-color: #3c4b94;
+  transition: 0.4s;
+}
+
+.quiz--container {
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz--btn {
+  margin: 0 auto 30px auto;
+}
