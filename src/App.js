@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Question from "./components/Question";
 import {nanoid} from "nanoid";
 import shuffle from "./utils/shuffle";
+import answer from "./components/Answer";
 
 
 const App = () => {
@@ -57,26 +58,12 @@ const App = () => {
     }, [data])
 
     function updateAnswer(id) {
-
         setQuestions(prevQuestions => prevQuestions.map(question => {
-            question.map(answer => {
-                console.log(answer)
-                return answer.id === id
-                    ? {...answer, isHeld : !answer.isHeld}
-                    : answer
-            })
+            return {...question,
+                    answers: question.answers.map(answer => {
+                        return answer.id === id ? {...answer, isHeld: !answer.isHeld} : {...answer}
+                    })}
         }))
-        // setQuestions(prevQuestions => prevQuestions.map(question => {
-        //     console.log(question)
-        //     // question.map(answer => {
-        //     //     console.log(answer)
-        //     //     return answer.id === id
-        //     //         ? {...answer, isHeld : !answer.isHeld}
-        //     //         : answer
-        //     // })
-        //
-        //     }
-        // ))
     }
 
     function checkAnswers(answers) {
